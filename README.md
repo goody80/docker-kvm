@@ -7,20 +7,20 @@ Boot with ISO from Hi-speed docker registry
 #!/bin/bash
 
 ## Create a New Directory for the volume mount
-mkdir -p ./data && chmod 644 ./data
+mkdir -p ./image && chmod 644 ./image
 
 ## Pull the docker image for the ubuntu iso image get
-docker run -it  -v $PWD:/data2 goody80/busybox_ubuntu_iso:16.04.4 /bin/sh -c 'mv  /data/* /data2/data/'
+docker run -it  -v $PWD:/data2 goody80/busybox_ubuntu_iso:16.04.4 /bin/sh -c 'mv  /data/* /data2/image/'
 
 
 ## Docker run for Nested KVM in container
-docker run \
+docker run -d \
     --privileged \
     -v /dev:/dev \
     -v ${PWD}:/data \
     -e RAM=2048 \
     -e SMP=1 \
-    -e IMAGE=/data/ubuntu-16.04.4-server-amd64.iso \
+    -e IMAGE=/data/image/ubuntu-16.04.4-server-amd64.iso \
     -e VNC=tcp \
     -p 2222:22 \
     -p 8080:80 \
